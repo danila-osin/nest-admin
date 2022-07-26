@@ -1,0 +1,25 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "prebuild": "rm -rf ./dist",
+    "build": "tsc",
+    "prestart": "yarn build",
+    "prerepl": "yarn build",
+    "start": "env NODE_PATH=./dist node dist/main.js",
+    "repl": "env NODE_PATH=./dist node dist/repl.js"
+  },
+  "dependencies": {
+    "@nestjs/common": "^9.0.5",
+    "@nestjs/core": "^9.0.5",
+    "@nestjs/platform-express": "^9.0.5",
+    "@nestjs/typeorm": "^9.0.0",
+    "@types/node": "^18.6.1",
+    "pg": "^8.7.3",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.5.6",
+    "typeorm": "^0.3.7"
+  }
+}
