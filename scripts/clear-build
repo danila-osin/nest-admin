@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ -z "$MODE" ] 
+then 
+  MODE='all'
+fi
+
+clear() {
+  for f in */ ; do
+    rm -rf ${1}/*/dist
+  done
+}
+
+if [ $MODE == 'apps' ]
+then
+  clear apps
+elif [ $MODE == 'packages' ]
+then
+  clear packages
+else 
+  clear packages & clear apps
+fi
+
+wait

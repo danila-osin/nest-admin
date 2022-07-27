@@ -1,0 +1,20 @@
+{
+  "name": "nest-admin",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn build:packages && yarn build:apps",
+    "build:packages": "./scripts/build-packages",
+    "build:apps": "./scripts/build-apps",
+    "clear:modules": "./scripts/clear-modules",
+    "clear:build": "./scripts/clear-build"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "nodemon": "^2.0.19"
+  }
+}

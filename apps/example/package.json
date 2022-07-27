@@ -8,10 +8,12 @@
     "build": "tsc",
     "prestart": "yarn build",
     "prerepl": "yarn build",
-    "start": "env NODE_PATH=./dist node dist/main.js",
-    "repl": "env NODE_PATH=./dist node dist/repl.js"
+    "start": "NODE_PATH=./dist node dist/main.js",
+    "dev": "NODE_PATH=./dist nodemon dist/main.js",
+    "repl": "NODE_PATH=./dist node dist/repl.js"
   },
   "dependencies": {
+    "@nest-admin/auth": "*",
     "@nestjs/common": "^9.0.5",
     "@nestjs/core": "^9.0.5",
     "@nestjs/platform-express": "^9.0.5",
@@ -23,3 +25,4 @@
     "typeorm": "^0.3.7"
   }
 }
+

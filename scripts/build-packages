@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+cd packages
+
+build_package() {
+  d=$1
+
+  cd $d
+
+  echo ">> >> Building [$d]";
+
+  yarn build;
+
+  echo ""
+
+  cd ..;
+}
+
+for d in */ ; do
+  build_package $d
+done

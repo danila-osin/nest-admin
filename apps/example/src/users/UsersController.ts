@@ -1,8 +1,11 @@
+import { Authorize } from '@nest-admin/auth';
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CreateUserDto } from './interfaces';
+import { UsersPolicy } from './UsersPolicy';
 import { UsersService } from './UsersService';
 
 @Controller('users')
+@Authorize({ Policy: UsersPolicy })
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

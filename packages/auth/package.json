@@ -1,0 +1,22 @@
+{
+  "name": "@nest-admin/auth",
+  "version": "0.0.1",
+  "main": "dist/index.js",
+  "author": "Danila Osin <danilaosin12@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "prebuild": "rm -rf ./dist",
+    "build": "tsc",
+    "prestart": "yarn build",
+    "prerepl": "yarn build",
+    "ci": "yarn install --frozen-lockfile"
+  },
+  "dependencies": {
+    "@nestjs/common": "^9.0.5",
+    "@nestjs/core": "^9.0.5",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.5.6"
+  }
+}
+

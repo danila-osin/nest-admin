@@ -1,0 +1,23 @@
+#!/bin/bash
+
+set -e
+
+cd apps
+
+build_app() {
+  d=$1
+
+  cd $d
+
+  echo ">> >> Building [$d]";
+
+  yarn build;
+
+  echo ""
+
+  cd ..;
+}
+
+for d in */ ; do
+  build_app $d
+done
