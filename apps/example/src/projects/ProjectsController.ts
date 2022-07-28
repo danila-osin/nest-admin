@@ -1,7 +1,10 @@
+import { Authorize } from '@nest-admin/auth';
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { CreateProjectDto, UpdateProjectDto } from './interfaces';
+import { ProjectsPolicy } from './ProjectsPolicy';
 import { ProjectsService } from './ProjectsService';
 
+@Authorize({ Policy: ProjectsPolicy })
 @Controller('projects')
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}

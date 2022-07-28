@@ -1,14 +1,22 @@
-import { DynamicModule, Module } from '@nestjs/common';
+import { NestAuthModule } from '@nest-admin/auth';
+import { Module } from '@nestjs/common';
+import { DatabaseModule } from 'db';
 import { ProjectsModule } from 'projects';
-import { UsersModule } from 'users';
+import { UserEntity } from 'users/UserEntity';
 
-@Module({})
-export class AppModule {
-  public static forRoot(typeOrmModule: DynamicModule): DynamicModule {
-    return {
-      module: AppModule,
-      imports: [typeOrmModule, UsersModule, ProjectsModule],
-    };
-  }
-}
+@Module({
+  imports: [
+    NestAuthModule.forRoot({
+      database: {
+        type: 'typeorm',
+        entities: {
+          User: UserEntity,
+        },
+      },
+    }),
+    DatabaseModule.forRoot(),
+    ProjectsModule,
+  ],
+})
+export class AppModule {}
 
