@@ -1,17 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
+import { USER_ENTITY_KEY } from '../container';
+import { NestAuthCoreModule } from '../NestAuthCoreModule';
 import { IUserEntity } from './interfaces';
-import { UserEntity } from './UserEntity';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectRepository(UserEntity) private readonly userRepository: Repository<IUserEntity>,
-  ) {}
+  private userRepository: Repository<IUserEntity>;
+
+  constructor(em: EntityManager) {
+    const UserEntity = NestAuthCoreModule.boot.getEntity(USER_ENTITY_KEY, true);
+
+    this.userRepository = em.getRepository(UserEntity);
+  }
 
   public get() {
     return this.userRepository.find();
   }
 }
-

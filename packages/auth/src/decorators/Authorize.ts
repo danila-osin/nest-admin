@@ -1,19 +1,19 @@
 import {
-  applyDecorators,
   CallHandler,
   ExecutionContext,
   Injectable,
   NestInterceptor,
   SetMetadata,
-  UseInterceptors,
+  Type,
+  UseInterceptors
 } from '@nestjs/common';
 import { PATH_METADATA } from '@nestjs/common/constants';
-import { POLICY_METADATA_KEY } from '../constants';
-import { ClassType, IPolicy } from '../interfaces';
 import { Observable } from 'rxjs';
+import { POLICY_METADATA_KEY } from '../constants';
+import { IPolicy } from '../interfaces';
 
 export type AuthorizeDecoratorInput<T> = {
-  Policy: ClassType<T>;
+  Policy: Type<T>;
 };
 
 @Injectable()
@@ -27,7 +27,7 @@ class AuthorizeInterceptor implements NestInterceptor {
 
     const handler = context.getHandler();
     const Controller = context.getClass();
-    const Policy = <ClassType<IPolicy>>Reflect.getMetadata(POLICY_METADATA_KEY, Controller);
+    const Policy = <Type<IPolicy>>Reflect.getMetadata(POLICY_METADATA_KEY, Controller);
 
     const controllerPath = <string>Reflect.getMetadata(PATH_METADATA, Controller);
     const handlerPath = <string>Reflect.getMetadata(PATH_METADATA, handler);
@@ -41,9 +41,8 @@ class AuthorizeInterceptor implements NestInterceptor {
 }
 
 export const Authorize = <T>(input: AuthorizeDecoratorInput<T>) => {
-  return applyDecorators(
-    UseInterceptors(AuthorizeInterceptor),
-    SetMetadata('policy', input.Policy),
-  );
+  return (Controller => {
+    UseInterceptors(AuthorizeInterceptor)(Controller);
+    SetMetadata('policy', input.Policy)(Controller);
+  }) as ClassDecorator;
 };
-
