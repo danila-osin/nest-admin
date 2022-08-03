@@ -7,8 +7,7 @@ export class NestAuthModule {
   public static forRoot(options: INestAuthModuleOptions): DynamicModule {
     return {
       module: NestAuthModule,
-      imports: [NestAuthCoreModule.forRoot(options)],
+      imports: [NestAuthCoreModule.forRoot(options)]
     };
   }
 }
-

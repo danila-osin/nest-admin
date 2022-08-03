@@ -1,5 +1,6 @@
-import { Authorize } from '@nest-admin/auth';
+import { Authorize, AuthorizeAction } from '@nest-admin/auth';
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+
 import { CreateProjectDto, UpdateProjectDto } from './interfaces';
 import { ProjectsPolicy } from './ProjectsPolicy';
 import { ProjectsService } from './ProjectsService';
@@ -9,11 +10,13 @@ import { ProjectsService } from './ProjectsService';
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
+  @AuthorizeAction('list')
   @Get()
   public get() {
     return this.projectsService.get();
   }
 
+  @AuthorizeAction('one')
   @Get(':id')
   public async getOne(@Param('id') id: string) {
     return (await this.projectsService.get({ id }))?.[0];

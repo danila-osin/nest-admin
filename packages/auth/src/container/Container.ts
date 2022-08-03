@@ -1,13 +1,22 @@
 import { ContainerKey, ContainerValue } from './interfaces';
 
-export class Container {
-  private store: Record<ContainerKey, ContainerValue> = {};
+export class Container<
+  TKey extends ContainerKey = ContainerKey,
+  TValue extends ContainerValue = ContainerValue
+> {
+  private store: Map<TKey, TValue> = new Map();
 
-  public set<T extends ContainerValue = ContainerValue>(key: ContainerKey, value: T): T {
-    return (this.store[key] = value);
+  public set<V extends TValue = TValue>(key: TKey, value: V): V {
+    this.store.set(key, value);
+
+    return value;
   }
 
-  public get<ReturnType>(key: ContainerKey): ReturnType | undefined {
-    return this.store[key];
+  public get<ReturnType extends TValue>(key: TKey): ReturnType | undefined {
+    return this.store.get(key) as ReturnType | undefined;
+  }
+
+  public has(key: TKey): boolean {
+    return this.store.has(key);
   }
 }

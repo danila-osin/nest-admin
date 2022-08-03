@@ -13,4 +13,3 @@ export type PolicyShow = {
 };
 
 export type IPolicy<T = any> = PolicyAuthorized<T> & PolicyShow & PolicyMethods<T>;
-

@@ -3,46 +3,56 @@ import {
   ExecutionContext,
   Injectable,
   NestInterceptor,
-  SetMetadata,
-  Type,
   UseInterceptors
 } from '@nestjs/common';
-import { PATH_METADATA } from '@nestjs/common/constants';
 import { Observable } from 'rxjs';
-import { POLICY_METADATA_KEY } from '../constants';
-import { IPolicy } from '../interfaces';
+import { isPolicy } from '../assertions';
+import { ControllerService } from '../controller';
+import {
+  NotRegisteredPolicyError,
+  SpecifiedClassIsNotPolicyError,
+  UnknownHandlerError
+} from '../errors';
 
-export type AuthorizeDecoratorInput<T> = {
-  Policy: Type<T>;
-};
+import { NestAuthCoreModule } from '../NestAuthCoreModule';
+import { IAuthorizeDecorator } from './interfaces';
 
 @Injectable()
 class AuthorizeInterceptor implements NestInterceptor {
   constructor() {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    console.log('>>> Intercepting');
     const request: Request = context.switchToHttp().getRequest();
 
     const { method } = request;
 
     const handler = context.getHandler();
     const Controller = context.getClass();
-    const Policy = <Type<IPolicy>>Reflect.getMetadata(POLICY_METADATA_KEY, Controller);
 
-    const controllerPath = <string>Reflect.getMetadata(PATH_METADATA, Controller);
-    const handlerPath = <string>Reflect.getMetadata(PATH_METADATA, handler);
+    const action = NestAuthCoreModule.boot.getHandlerAction(handler);
+    const Policy = NestAuthCoreModule.boot.getControllerPolicy(Controller.prototype);
 
-    console.log(method, controllerPath, handlerPath);
-    console.log('Controller:', Controller);
-    console.log('Policy:', Policy);
+    if (!Policy) throw new NotRegisteredPolicyError(Controller.name);
+    if (!action) throw new UnknownHandlerError(handler.name, Controller.name);
+
+    console.log(method);
 
     return next.handle();
   }
 }
 
-export const Authorize = <T>(input: AuthorizeDecoratorInput<T>) => {
-  return (Controller => {
-    UseInterceptors(AuthorizeInterceptor)(Controller);
-    SetMetadata('policy', input.Policy)(Controller);
-  }) as ClassDecorator;
+export const Authorize: IAuthorizeDecorator = (input) => {
+  console.log('>>> Policy registration:', input.Policy.name);
+
+  const { Policy } = input;
+
+  if (!isPolicy(Policy)) throw new SpecifiedClassIsNotPolicyError(Policy.name);
+  else
+    return (Controller) => {
+      const controllerData = ControllerService.createData(Controller, Policy);
+      NestAuthCoreModule.boot.saveControllerData(controllerData);
+
+      UseInterceptors(AuthorizeInterceptor)(Controller);
+    };
 };

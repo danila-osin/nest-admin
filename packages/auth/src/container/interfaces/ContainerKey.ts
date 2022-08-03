@@ -1,1 +1,1 @@
-export type ContainerKey = keyof any;
+export type ContainerKey = any;

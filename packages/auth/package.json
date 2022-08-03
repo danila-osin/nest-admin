@@ -10,6 +10,7 @@
     "build": "tsc",
     "prestart": "yarn build",
     "prerepl": "yarn build",
+    "lint": "prettier --config .prettierrc --write ./src",
     "ci": "yarn install --frozen-lockfile"
   },
   "dependencies": {
