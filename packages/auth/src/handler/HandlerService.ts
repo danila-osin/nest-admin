@@ -1,5 +1,5 @@
 import { PATH_METADATA } from '@nestjs/common/constants';
-import { Action, Fn } from '../interfaces';
+import { Action, Fn } from 'interfaces';
 
 export class HandlerService {
   static createAction(handler: Fn): Action {

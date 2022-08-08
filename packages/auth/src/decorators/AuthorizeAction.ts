@@ -1,6 +1,6 @@
-import { HandlerUndefinedError } from '../errors';
-import { HandlerService } from '../handler';
-import { NestAuthCoreModule } from '../NestAuthCoreModule';
+import { HandlerUndefinedError } from 'errors';
+import { HandlerService } from 'handler';
+import { NestAuthCoreModule } from 'NestAuthCoreModule';
 
 import { IAuthorizeActionDecorator } from './interfaces';
 

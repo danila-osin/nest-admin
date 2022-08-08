@@ -1,5 +1,6 @@
 import { Type } from '@nestjs/common';
-import { IUserEntity } from '../user';
+import { ISessionEntity } from 'session';
+import { IUserEntity } from 'user';
 
 export type INestAuthModuleOptionsDatabaseType = 'typeorm';
 
@@ -8,6 +9,7 @@ export interface INestAuthModuleOptions {
     type: INestAuthModuleOptionsDatabaseType;
     entities: {
       User: Type<IUserEntity>;
+      Session: Type<ISessionEntity>;
     };
   };
 }

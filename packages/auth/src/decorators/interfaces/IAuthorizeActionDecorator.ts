@@ -1,4 +1,4 @@
-import { MethodDescriptor, ObjLiteral } from '../../interfaces';
+import { MethodDescriptor, ObjLiteral } from 'interfaces';
 
 export interface IAuthorizeActionDecorator {
   (action: string): (

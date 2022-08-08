@@ -1,7 +1,7 @@
 import { Type } from '@nestjs/common';
 
-import { Container } from '../container';
-import { Action, ControllerData, Fn, HandlerActionPair, IPolicy, ObjLiteral } from '../interfaces';
+import { Container } from 'container';
+import { Action, ControllerData, Fn, HandlerActionPair, IPolicy, ObjLiteral } from 'interfaces';
 
 export class Boot {
   private controllers: Type[] = [];

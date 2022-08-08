@@ -6,15 +6,15 @@ import {
   UseInterceptors
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { isPolicy } from '../assertions';
-import { ControllerService } from '../controller';
+import { isPolicy } from 'assertions';
+import { ControllerService } from 'controller';
 import {
   NotRegisteredPolicyError,
   SpecifiedClassIsNotPolicyError,
   UnknownHandlerError
-} from '../errors';
+} from 'errors';
 
-import { NestAuthCoreModule } from '../NestAuthCoreModule';
+import { NestAuthCoreModule } from 'NestAuthCoreModule';
 import { IAuthorizeDecorator } from './interfaces';
 
 @Injectable()

@@ -1,8 +1,8 @@
 import { Type } from '@nestjs/common';
 import { PATH_METADATA } from '@nestjs/common/constants';
-import { HandlerService } from '../handler';
-import { ControllerData, Fn, IPolicy } from '../interfaces';
-import { getProtoFunctionNames } from '../utils';
+import { HandlerService } from 'handler';
+import { ControllerData, Fn, IPolicy } from 'interfaces';
+import { getProtoFunctionNames } from 'utils';
 
 export class ControllerService {
   static getHandlerNames(Controller: Type): string[] {

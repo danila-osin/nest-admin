@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { INestAuthModuleOptions } from './interfaces';
-import { NestAuthCoreModule } from './NestAuthCoreModule';
+import { INestAuthModuleOptions } from 'interfaces';
+import { NestAuthCoreModule } from 'NestAuthCoreModule';
 
 @Module({})
 export class NestAuthModule {

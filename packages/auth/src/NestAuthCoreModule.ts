@@ -1,9 +1,9 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { Boot } from './boot';
-import { containers, USER_ENTITY_KEY } from './container';
-import { INestAuthModuleOptions } from './interfaces';
-import { UserModule } from './user';
-import { logBoot } from './utils/logBoot';
+import { Boot } from 'boot';
+import { containers, EntityContainerKey } from 'container';
+import { INestAuthModuleOptions } from 'interfaces';
+import { UserModule } from 'user';
+import { logBoot } from 'utils';
 
 @Module({})
 export class NestAuthCoreModule {
@@ -12,7 +12,7 @@ export class NestAuthCoreModule {
   static forRoot(options: INestAuthModuleOptions): DynamicModule {
     logBoot();
 
-    containers.entity.set(USER_ENTITY_KEY, options.database.entities.User);
+    containers.entity.set(EntityContainerKey.USER_ENTITY, options.database.entities.User);
 
     return {
       module: NestAuthCoreModule,

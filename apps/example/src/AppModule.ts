@@ -15,6 +15,9 @@ export class AppModule {
             type: 'typeorm',
             entities: {
               User: UserEntity,
+              Session: class {
+                id!: string;
+              },
             },
           },
         }),

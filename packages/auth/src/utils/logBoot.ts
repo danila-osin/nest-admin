@@ -1,5 +1,5 @@
-import { ControllerService } from '../controller';
-import { NestAuthCoreModule } from '../NestAuthCoreModule';
+import { ControllerService } from 'controller';
+import { NestAuthCoreModule } from 'NestAuthCoreModule';
 
 export const logBoot = (): void => {
   const controllers = NestAuthCoreModule.boot.getControllers();
