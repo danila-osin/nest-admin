@@ -1,5 +1,7 @@
 import { EntityContainer } from './EntityContainer';
+import { TokenOptsContainer } from './TokenOptsContainer';
 
 export const containers = {
-  entity: new EntityContainer()
+  entity: new EntityContainer(),
+  tokenOpts: new TokenOptsContainer()
 };

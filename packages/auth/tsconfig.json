@@ -7,13 +7,12 @@
     "module": "commonjs",
     "rootDir": "./src",
     "outDir": "./dist",
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "*": ["./src/*"]
+      "*": ["./*"]
     },
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "noImplicitUseStrict": false,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "strictFunctionTypes": true,
@@ -23,7 +22,6 @@
     "useUnknownInCatchVariables": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "exactOptionalPropertyTypes": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedIndexedAccess": true,
@@ -33,5 +31,5 @@
     "allowUnreachableCode": true,
     "skipLibCheck": true
   },
-  "include": ["src/*"]
+  "include": ["./src/*"]
 }

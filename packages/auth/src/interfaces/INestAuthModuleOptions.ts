@@ -12,4 +12,8 @@ export interface INestAuthModuleOptions {
       Session: Type<ISessionEntity>;
     };
   };
+  tokenOpts: {
+    ttl: string;
+    secret: string;
+  };
 }

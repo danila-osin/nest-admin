@@ -1,4 +1,4 @@
 export * from './interfaces';
 export * from './UserModule';
-export * from './UserController';
+export * from './UserRepository';
 export * from './UserService';

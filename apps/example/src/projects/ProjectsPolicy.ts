@@ -1,28 +1,43 @@
 import { BooleanLike, IPolicy } from '@nest-admin/auth';
 import { ProjectsController } from 'projects';
+import { UserEntity } from 'users';
 
-export class ProjectsPolicy implements IPolicy<ProjectsController> {
-  authorized(_: keyof ProjectsController): BooleanLike {
-    throw new Error('Method not implemented.');
-  }
-  show(): BooleanLike {
-    throw new Error('Method not implemented.');
+export class ProjectsPolicy implements IPolicy<ProjectsController, UserEntity> {
+  public authorized(action: keyof ProjectsController, user: UserEntity): BooleanLike {
+    console.log(`ProjectPolicyAction called: ${action}`);
+
+    return this[action] ? this[action](user) : this.show();
   }
 
-  public get(): BooleanLike {
-    throw new Error('Method not implemented.');
+  public show(): BooleanLike {
+    console.log('Show called');
+
+    return true;
   }
-  public getOne(): BooleanLike {
-    throw new Error('Method not implemented.');
+
+  public get(user: UserEntity): BooleanLike {
+    console.log(user);
+    return true;
   }
-  public create(): BooleanLike {
-    throw new Error('Method not implemented.');
+
+  public getOne(user: UserEntity): BooleanLike {
+    console.log(user);
+    return true;
   }
-  public delete(): BooleanLike {
-    throw new Error('Method not implemented.');
+
+  public create(user: UserEntity): BooleanLike {
+    console.log(user);
+    return true;
   }
-  public update(): BooleanLike {
-    throw new Error('Method not implemented.');
+
+  public delete(user: UserEntity): BooleanLike {
+    console.log(user);
+    return true;
+  }
+
+  public update(user: UserEntity): BooleanLike {
+    console.log(user);
+    return true;
   }
 }
 

@@ -1,19 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { EntityManager, Repository } from 'typeorm';
-import { containers, EntityContainerKey } from 'container';
+import { Observable } from 'rxjs';
 import { IUserEntity } from './interfaces';
+import { UserRepository } from './UserRepository';
 
 @Injectable()
 export class UserService {
-  private userRepository: Repository<IUserEntity>;
+  constructor(private readonly userRepo: UserRepository) {}
 
-  constructor(em: EntityManager) {
-    const UserEntity = containers.entity.get(EntityContainerKey.USER_ENTITY, true);
-
-    this.userRepository = em.getRepository(UserEntity);
+  public create(query: Partial<IUserEntity>): IUserEntity {
+    return this.userRepo.create(query);
   }
 
-  public get() {
-    return this.userRepository.find();
+  public findOne(query: Partial<IUserEntity>): Observable<IUserEntity | null> {
+    return this.userRepo.findOne(query);
+  }
+
+  public save(entity: IUserEntity): Observable<IUserEntity> {
+    return this.userRepo.save(entity);
   }
 }

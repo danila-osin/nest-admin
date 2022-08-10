@@ -8,9 +8,12 @@ export class UserEntity {
   public id!: UserID;
 
   @Column()
-  public firstName!: string;
+  public username!: string;
 
   @Column()
-  public lastName!: string;
+  public login!: string;
+
+  @Column()
+  public password!: string;
 }
 

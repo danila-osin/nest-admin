@@ -20,6 +20,10 @@ export class AppModule {
               },
             },
           },
+          tokenOpts: {
+            ttl: '15m',
+            secret: 'TOKEN_SECRET',
+          },
         }),
         DatabaseModule.forRoot(),
         DatabaseModule.forFeature(),

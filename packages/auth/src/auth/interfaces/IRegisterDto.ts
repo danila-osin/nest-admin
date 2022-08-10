@@ -1,5 +1,4 @@
-export interface IUserEntity {
-  id: string;
+export interface IRegisterDto {
   username: string;
   login: string;
   password: string;
