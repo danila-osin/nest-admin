@@ -15,7 +15,7 @@ export class AuthService {
   ) {}
 
   public login({ login, password }: ILoginDto): Observable<ILoginResponse> {
-    return this.userService.findOne({ login }).pipe(
+    return this.userService.findByLogin(login).pipe(
       map((user) => {
         if (!user || !this.hasher.verify(password, user.password)) throw new InvalidCredentials();
 
@@ -25,15 +25,15 @@ export class AuthService {
   }
 
   public register({ login, password, username }: IRegisterDto): Observable<IRegisterResponse> {
-    return this.userService.findOne({ login }).pipe(
+    return this.userService.findByLogin(login).pipe(
       mergeMap((user) => {
         if (user) throw new LoginBusy();
 
         const passwordHash = this.hasher.hash(password);
 
-        return this.userService.save(
-          this.userService.create({ username, login, password: passwordHash })
-        );
+        const userEntity = { login, password: passwordHash, username };
+
+        return this.userService.create(userEntity);
       }),
       map(({ login }) => ({ login }))
     );

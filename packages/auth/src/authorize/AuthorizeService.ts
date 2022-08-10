@@ -10,8 +10,6 @@ export class AuthorizeService {
   public authorize(context: ExecutionContext): Observable<boolean> {
     const contextData = this.contextService.pullContextData(context);
 
-    this.contextService.validateContextData(contextData);
-
     const { Policy, action } = contextData;
 
     return this.contextService.pullUserFromContext(context).pipe(

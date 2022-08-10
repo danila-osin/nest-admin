@@ -5,17 +5,17 @@ import { UserRepository } from './UserRepository';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly userRepo: UserRepository) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
-  public create(query: Partial<IUserEntity>): IUserEntity {
-    return this.userRepo.create(query);
+  public create(query: Omit<IUserEntity, 'id'>): Observable<IUserEntity> {
+    return this.userRepository.save(query);
   }
 
-  public findOne(query: Partial<IUserEntity>): Observable<IUserEntity | undefined> {
-    return this.userRepo.findOne(query);
+  public findByLogin(login: string) {
+    return this.userRepository.findOne({ login });
   }
 
-  public save(entity: IUserEntity): Observable<IUserEntity> {
-    return this.userRepo.save(entity);
+  public find(id: string) {
+    return this.userRepository.findOne({ id });
   }
 }

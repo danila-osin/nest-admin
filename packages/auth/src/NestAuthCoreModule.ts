@@ -2,28 +2,35 @@ import { DynamicModule, Global, Module } from '@nestjs/common';
 import { AuthModule } from 'auth';
 import { AuthorizeModule } from 'authorize';
 import { Boot } from 'boot';
-import { containers, EntityContainerKey, TokenOptsContainerKey } from 'container';
+import { NEST_AUTH_ENTITIES, NEST_AUTH_TOKEN_OPTIONS } from 'const';
 import { INestAuthModuleOptions } from 'interfaces';
+import { ModuleOptions } from 'ModuleOptions';
 import { UserModule } from 'user';
 import { logBoot } from 'utils';
 
 @Global()
 @Module({})
 export class NestAuthCoreModule {
-  public static boot = new Boot();
+  static boot = new Boot();
 
-  static forRoot(options: INestAuthModuleOptions): DynamicModule {
+  static forRoot(userOptions: INestAuthModuleOptions): DynamicModule {
     logBoot();
 
-    containers.entity.set(EntityContainerKey.USER_ENTITY, options.database.entities.User);
-    containers.entity.set(EntityContainerKey.SESSION_ENTITY, options.database.entities.Session);
-
-    containers.tokenOpts.set(TokenOptsContainerKey.TTL, options.tokenOpts.ttl);
-    containers.tokenOpts.set(TokenOptsContainerKey.SECRET, options.tokenOpts.secret);
+    const options = ModuleOptions.applyModuleOptions(userOptions);
 
     return {
       module: NestAuthCoreModule,
       imports: [UserModule, AuthModule, AuthorizeModule],
+      providers: [
+        {
+          provide: NEST_AUTH_ENTITIES,
+          useValue: options.database.entities
+        },
+        {
+          provide: NEST_AUTH_TOKEN_OPTIONS,
+          useValue: options.tokenOptions
+        }
+      ],
       exports: [AuthorizeModule]
     };
   }

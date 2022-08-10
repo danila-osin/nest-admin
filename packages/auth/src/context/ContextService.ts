@@ -16,7 +16,7 @@ export class ContextService {
     private readonly tokenService: TokenService
   ) {}
 
-  public pullContextData(context: ExecutionContext): IContextData {
+  public pullContextData(context: ExecutionContext): Required<IContextData> {
     const request = context.switchToHttp().getRequest<IncomingMessage>();
     const { method = 'GET' } = request;
 
@@ -34,6 +34,8 @@ export class ContextService {
       method
     };
 
+    this.validateContextData(data);
+
     return data;
   }
 
@@ -43,15 +45,14 @@ export class ContextService {
   }
 
   public pullUserFromContext(context: ExecutionContext): Observable<IUserEntity | undefined> {
-    const token = this.tokenService.getTokenFromRequest(context.switchToHttp().getRequest());
-    this.tokenService.validateToken(token);
+    const token = this.tokenService.getValidTokenFromRequest(context.switchToHttp().getRequest());
 
     const { userId: id } = this.tokenService.verify<ITokenPayload>(token);
 
-    return this.userService.findOne({ id });
+    return this.userService.find(id);
   }
 
   public pullSessionFromContext(_: ExecutionContext): ISessionEntity {
-    return { id: '1' };
+    throw new Error('Method not implemented');
   }
 }

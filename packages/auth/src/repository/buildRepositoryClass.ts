@@ -1,13 +1,15 @@
-import { containers, EntityContainerKey } from 'container';
+import { Type } from '@nestjs/common';
+import { INestModuleEntities, EntitiesKey } from 'interfaces';
 import { EntityManager, Repository } from 'typeorm';
 
-export const buildRepositoryClass = (entityKey: EntityContainerKey) => {
+export const buildRepositoryClass = (entityKey: EntitiesKey) => {
   return class<T> {
     repo: Repository<T>;
 
-    constructor(em: EntityManager) {
-      const entity = containers.entity.get(entityKey, true);
-      this.repo = em.getRepository(entity);
+    constructor(em: EntityManager, entities: INestModuleEntities) {
+      const Entity = <Type>entities[entityKey];
+
+      this.repo = em.getRepository(Entity);
     }
   };
 };

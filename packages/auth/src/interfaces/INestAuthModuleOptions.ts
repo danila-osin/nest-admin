@@ -4,16 +4,20 @@ import { IUserEntity } from 'user';
 
 export type INestAuthModuleOptionsDatabaseType = 'typeorm';
 
+export type INestModuleEntities = {
+  User: Type<IUserEntity>;
+  Session: Type<ISessionEntity>;
+};
+
+export type INestAuthTokenOptions = {
+  ttl: string;
+  secret: string;
+};
+
 export interface INestAuthModuleOptions {
   database: {
     type: INestAuthModuleOptionsDatabaseType;
-    entities: {
-      User: Type<IUserEntity>;
-      Session: Type<ISessionEntity>;
-    };
+    entities: INestModuleEntities;
   };
-  tokenOpts: {
-    ttl: string;
-    secret: string;
-  };
+  tokenOptions: INestAuthTokenOptions;
 }
