@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { EntityContainerKey } from 'container';
 import { buildRepositoryClass } from 'repository';
-import { from, Observable } from 'rxjs';
+import { from, map, Observable } from 'rxjs';
 import { EntityManager } from 'typeorm';
 import { IUserEntity } from './interfaces';
 
@@ -13,8 +13,8 @@ export class UserRepository extends buildRepositoryClass(
     super(em);
   }
 
-  public findOne(query: Partial<IUserEntity>): Observable<IUserEntity | null> {
-    return from(this.repo.findOne({ where: query }));
+  public findOne(query: Partial<IUserEntity>): Observable<IUserEntity | undefined> {
+    return from(this.repo.findOne({ where: query })).pipe(map((user) => user || undefined));
   }
 
   public create(query: Partial<IUserEntity>): IUserEntity {

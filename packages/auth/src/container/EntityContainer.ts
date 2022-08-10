@@ -1,5 +1,5 @@
 import { Type } from '@nestjs/common';
-import { EmptyBootEntityError, throwError } from 'errors';
+import { EmptyContainerEntityError } from 'errors';
 import { Container } from './Container';
 import { EntityContainerKey } from './keys';
 
@@ -11,7 +11,7 @@ export class EntityContainer {
   public get<T extends Type>(key: EntityContainerKey, errorOnEmpty?: boolean): T | undefined {
     const Entity = this.entities.get<T>(key);
 
-    (Entity === undefined && errorOnEmpty) ?? throwError(new EmptyBootEntityError(key));
+    if (!Entity && errorOnEmpty) throw new EmptyContainerEntityError(key);
 
     return Entity;
   }

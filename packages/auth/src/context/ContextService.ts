@@ -1,15 +1,24 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
+import { ITokenPayload } from 'auth';
 import { NotRegisteredPolicyError, UnknownHandlerError } from 'errors';
+import { IncomingMessage } from 'http';
 import { NestAuthCoreModule } from 'NestAuthCoreModule';
+import { Observable } from 'rxjs';
 import { ISessionEntity } from 'session';
-import { IUserEntity } from 'user';
+import { TokenService } from 'token';
+import { IUserEntity, UserService } from 'user';
 import { IContextData } from './interfaces';
 
 @Injectable()
 export class ContextService {
+  constructor(
+    private readonly userService: UserService,
+    private readonly tokenService: TokenService
+  ) {}
+
   public pullContextData(context: ExecutionContext): IContextData {
-    const request = context.switchToHttp().getRequest<Request>();
-    const { method } = request;
+    const request = context.switchToHttp().getRequest<IncomingMessage>();
+    const { method = 'GET' } = request;
 
     const handler = context.getHandler();
     const Controller = context.getClass();
@@ -33,22 +42,16 @@ export class ContextService {
     if (!data.action) throw new UnknownHandlerError(data.handler.name, data.Controller.name);
   }
 
-  public pullUserFromContext(_: ExecutionContext): IUserEntity {
-    const user: IUserEntity = {
-      id: '1',
-      login: 'user',
-      username: 'danila',
-      password: 'asd'
-    };
+  public pullUserFromContext(context: ExecutionContext): Observable<IUserEntity | undefined> {
+    const token = this.tokenService.getTokenFromRequest(context.switchToHttp().getRequest());
+    this.tokenService.validateToken(token);
 
-    return user;
+    const { userId: id } = this.tokenService.verify<ITokenPayload>(token);
+
+    return this.userService.findOne({ id });
   }
 
   public pullSessionFromContext(_: ExecutionContext): ISessionEntity {
-    const session: ISessionEntity = {
-      id: '1'
-    };
-
-    return session;
+    return { id: '1' };
   }
 }

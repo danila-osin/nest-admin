@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { containers, TokenOptsContainerKey } from 'container';
 import { InvalidCredentials, LoginBusy } from 'errors';
 import { Hasher } from 'hasher';
 import { map, mergeMap, Observable } from 'rxjs';
-import { Serializer } from 'serializer';
+import { TokenService } from 'token';
 import { UserService } from 'user';
 import { ILoginDto, ILoginResponse, IRegisterDto, IRegisterResponse } from './interfaces';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly serializer: Serializer,
+    private readonly tokenService: TokenService,
     private readonly userService: UserService,
     private readonly hasher: Hasher
   ) {}
@@ -20,14 +19,7 @@ export class AuthService {
       map((user) => {
         if (!user || !this.hasher.verify(password, user.password)) throw new InvalidCredentials();
 
-        const ttl = containers.tokenOpts.get<string>(TokenOptsContainerKey.TTL);
-        const secret = containers.tokenOpts.get<string>(TokenOptsContainerKey.SECRET);
-
-        if (!secret) throw new InvalidCredentials();
-
-        return {
-          token: this.serializer.sign({ userId: user.id }, secret, ttl)
-        };
+        return { token: this.tokenService.sign({ userId: user.id }) };
       })
     );
   }

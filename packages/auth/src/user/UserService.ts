@@ -11,7 +11,7 @@ export class UserService {
     return this.userRepo.create(query);
   }
 
-  public findOne(query: Partial<IUserEntity>): Observable<IUserEntity | null> {
+  public findOne(query: Partial<IUserEntity>): Observable<IUserEntity | undefined> {
     return this.userRepo.findOne(query);
   }
 

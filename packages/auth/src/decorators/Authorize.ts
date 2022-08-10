@@ -4,15 +4,15 @@ import { AuthorizeService } from 'authorize';
 import { ControllerService } from 'controller';
 import { SpecifiedClassIsNotPolicyError } from 'errors';
 
-import { BooleanLike } from 'interfaces';
 import { NestAuthCoreModule } from 'NestAuthCoreModule';
+import { Observable } from 'rxjs';
 import { IAuthorizeDecorator } from './interfaces';
 
 @Injectable()
 class AuthorizeGuard implements CanActivate {
   constructor(private readonly authorizeService: AuthorizeService) {}
 
-  canActivate(context: ExecutionContext): BooleanLike {
+  canActivate(context: ExecutionContext): Observable<boolean> {
     return this.authorizeService.authorize(context);
   }
 }

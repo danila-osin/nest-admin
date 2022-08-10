@@ -6,3 +6,12 @@ import { getProtoFunctionNames } from 'utils';
 export const isPolicy = (Policy: Type): Policy is Type<IPolicy> => {
   return REQUIRED_POLICY_METHODS.every((method) => getProtoFunctionNames(Policy).includes(method));
 };
+
+export const isPromise = <T>(value: any): value is Promise<T> => {
+  return (
+    value !== undefined &&
+    value !== null &&
+    typeof value === 'object' &&
+    typeof value['then'] === 'function'
+  );
+};
