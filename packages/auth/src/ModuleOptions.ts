@@ -1,10 +1,11 @@
-import { DeepPartial, INestAuthModuleOptions } from 'interfaces';
-import { deepMerge } from 'utils';
+import { INestAuthModuleOptions, INestAuthModuleUserOptions } from 'interfaces';
 
 export class ModuleOptions {
-  static DEFAULT_MODULE_OPTIONS: DeepPartial<INestAuthModuleOptions> = {
+  static DEFAULT_MODULE_OPTIONS = {
+    api: 'rest' as const,
     tokenOptions: {
-      ttl: '15m'
+      ttl: '15m',
+      secret: '_NEST_AUTH_TOKEN_SECRET_'
     }
   };
 
@@ -12,7 +13,14 @@ export class ModuleOptions {
     return this.DEFAULT_MODULE_OPTIONS;
   }
 
-  static applyModuleOptions(userModuleOptions: INestAuthModuleOptions): INestAuthModuleOptions {
-    return deepMerge(this.DEFAULT_MODULE_OPTIONS, userModuleOptions);
+  static applyModuleOptions(userModuleOptions: INestAuthModuleUserOptions): INestAuthModuleOptions {
+    return {
+      ...this.DEFAULT_MODULE_OPTIONS,
+      ...userModuleOptions,
+      tokenOptions: {
+        ...this.DEFAULT_MODULE_OPTIONS.tokenOptions,
+        ...userModuleOptions.tokenOptions
+      }
+    };
   }
 }

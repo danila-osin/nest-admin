@@ -1,5 +1,7 @@
 export * from './shared';
+export * from './ExecutionContextType';
 export * from './INestAuthModuleOptions';
+export * from './INestAuthModuleUserOptions';
 export * from './IPolicy';
 export * from './Action';
 export * from './ControllerData';

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { NEST_AUTH_TOKEN_OPTIONS } from 'const';
-import { Unauthorized } from 'errors';
+import { UnauthorizedError } from 'errors';
 import { IncomingMessage } from 'http';
 import { INestAuthTokenOptions } from 'interfaces';
 import { JwtPayload } from 'jsonwebtoken';
@@ -37,6 +37,6 @@ export class TokenService {
   }
 
   public validateToken(token: string | undefined): asserts token is string {
-    if (!token || typeof token !== 'string') throw new Unauthorized();
+    if (!token || typeof token !== 'string') throw new UnauthorizedError();
   }
 }

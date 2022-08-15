@@ -1,6 +1,6 @@
 import { HttpException } from '@nestjs/common';
 
-export class InvalidCredentials extends HttpException {
+export class InvalidCredentialsError extends HttpException {
   constructor() {
     super(`Invalid Credentials`, 400);
   }

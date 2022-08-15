@@ -1,4 +1,5 @@
-export * from './EmptyContainerEntityError';
+export * from './EmptyContainerEntity';
+export * from './ContextRequestIsUndefined';
 export * from './UnknownHandler';
 export * from './NotRegisteredPolicy';
 export * from './SpecifiedClassIsNotPolicy';

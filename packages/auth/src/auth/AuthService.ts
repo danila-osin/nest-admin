@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { InvalidCredentials, LoginBusy } from 'errors';
+import { InvalidCredentialsError, LoginBusyError } from 'errors';
 import { Hasher } from 'hasher';
 import { map, mergeMap, Observable } from 'rxjs';
 import { TokenService } from 'token';
@@ -17,7 +17,8 @@ export class AuthService {
   public login({ login, password }: ILoginDto): Observable<ILoginResponse> {
     return this.userService.findByLogin(login).pipe(
       map((user) => {
-        if (!user || !this.hasher.verify(password, user.password)) throw new InvalidCredentials();
+        if (!user || !this.hasher.verify(password, user.password))
+          throw new InvalidCredentialsError();
 
         return { token: this.tokenService.sign({ userId: user.id }) };
       })
@@ -27,7 +28,7 @@ export class AuthService {
   public register({ login, password, username }: IRegisterDto): Observable<IRegisterResponse> {
     return this.userService.findByLogin(login).pipe(
       mergeMap((user) => {
-        if (user) throw new LoginBusy();
+        if (user) throw new LoginBusyError();
 
         const passwordHash = this.hasher.hash(password);
 

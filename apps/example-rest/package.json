@@ -1,5 +1,5 @@
 {
-  "name": "example",
+  "name": "example-rest",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -8,7 +8,7 @@
     "build": "tsc",
     "prestart": "yarn build",
     "prerepl": "yarn build",
-    "start": "NODE_PATH=./dist node dist/main.js",
+    "start": "DEBUG=Boot* NODE_PATH=./dist node dist/main.js",
     "dev": "NODE_PATH=./dist nodemon dist/main.js",
     "repl": "NODE_PATH=./dist node dist/repl.js"
   },

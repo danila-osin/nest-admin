@@ -4,7 +4,7 @@ import { from, mergeMap, Observable, of } from 'rxjs';
 import { matchMaybeAsync } from 'utils';
 
 @Injectable()
-export class AuthorizeService {
+export class Authorizer {
   constructor(private readonly contextService: ContextService) {}
 
   public authorize(context: ExecutionContext): Observable<boolean> {

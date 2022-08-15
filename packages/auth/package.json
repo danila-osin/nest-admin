@@ -17,13 +17,16 @@
   "dependencies": {
     "@nestjs/common": "^9.0.5",
     "@nestjs/core": "^9.0.5",
+    "@nestjs/graphql": "^10.0.21",
     "@nestjs/typeorm": "^9.0.0",
+    "@types/debug": "^4.1.7",
     "@types/jsonwebtoken": "^8.5.8",
     "debug": "^4.3.4",
     "jsonwebtoken": "^8.5.1",
     "reflect-metadata": "^0.1.13",
     "resolve-tspaths": "^0.7.4",
     "rxjs": "^7.5.6",
+    "supports-color": "^9.2.2",
     "typeorm": "^0.3.7"
   }
 }

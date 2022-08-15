@@ -1,0 +1,58 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type LoginResponse {
+  token: String!
+}
+
+type RegisterResponse {
+  login: String!
+}
+
+type SuccessResponse {
+  ok: Boolean!
+}
+
+type Project {
+  id: ID!
+  name: String!
+  title: String!
+  ownerId: ID!
+}
+
+type Query {
+  get: [Project!]!
+  getOne(id: ID!): Project!
+}
+
+type Mutation {
+  create(input: CreateProjectInput!): Project!
+  delete(id: ID!): SuccessResponse!
+  update(input: UpdateProjectInput!): SuccessResponse!
+  login(input: LoginInput!): LoginResponse!
+  register(input: RegisterInput!): RegisterResponse!
+}
+
+input CreateProjectInput {
+  name: String!
+  title: String!
+  ownerId: ID!
+}
+
+input UpdateProjectInput {
+  id: ID!
+  name: String
+  title: String
+}
+
+input LoginInput {
+  login: String!
+  password: String!
+}
+
+input RegisterInput {
+  username: String!
+  login: String!
+  password: String!
+}

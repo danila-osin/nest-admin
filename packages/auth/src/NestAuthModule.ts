@@ -1,14 +1,14 @@
 import { DynamicModule, Module } from '@nestjs/common';
-import { INestAuthModuleOptions } from 'interfaces';
+import { INestAuthModuleUserOptions } from 'interfaces';
 import { NestAuthCoreModule } from 'NestAuthCoreModule';
 import 'reflect-metadata';
 
 @Module({})
 export class NestAuthModule {
-  public static forRoot(options: INestAuthModuleOptions): DynamicModule {
+  public static forRoot(userOptions: INestAuthModuleUserOptions): DynamicModule {
     return {
       module: NestAuthModule,
-      imports: [NestAuthCoreModule.forRoot(options)]
+      imports: [NestAuthCoreModule.forRoot(userOptions)]
     };
   }
 }

@@ -15,15 +15,12 @@ export class AppModule {
             type: 'typeorm',
             entities: {
               User: UserEntity,
-              Session: class {
+              Session: class SessionEntity {
                 id!: string;
               },
             },
           },
-          tokenOpts: {
-            ttl: '15m',
-            secret: 'TOKEN_SECRET',
-          },
+          tokenOptions: {},
         }),
         DatabaseModule.forRoot(),
         DatabaseModule.forFeature(),

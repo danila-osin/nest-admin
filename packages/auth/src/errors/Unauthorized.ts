@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus } from '@nestjs/common';
 
-export class Unauthorized extends HttpException {
+export class UnauthorizedError extends HttpException {
   constructor() {
     super(`Unauthorized`, HttpStatus.UNAUTHORIZED);
   }

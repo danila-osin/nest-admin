@@ -1,6 +1,6 @@
 import { HttpException } from '@nestjs/common';
 
-export class LoginBusy extends HttpException {
+export class LoginBusyError extends HttpException {
   constructor() {
     super(`Login Busy`, 400);
   }

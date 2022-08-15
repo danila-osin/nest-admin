@@ -1,7 +1,14 @@
-import { ExecutionContext, Injectable } from '@nestjs/common';
+import { ExecutionContext, Inject, Injectable } from '@nestjs/common';
+import { GqlExecutionContext } from '@nestjs/graphql';
 import { ITokenPayload } from 'auth';
-import { NotRegisteredPolicyError, UnknownHandlerError } from 'errors';
+import { NEST_AUTH_API } from 'const';
+import {
+  ContextRequestIsUndefinedError,
+  NotRegisteredPolicyError,
+  UnknownHandlerError
+} from 'errors';
 import { IncomingMessage } from 'http';
+import { INestAuthModuleOptionsApi } from 'interfaces';
 import { NestAuthCoreModule } from 'NestAuthCoreModule';
 import { Observable } from 'rxjs';
 import { ISessionEntity } from 'session';
@@ -13,11 +20,12 @@ import { IContextData } from './interfaces';
 export class ContextService {
   constructor(
     private readonly userService: UserService,
-    private readonly tokenService: TokenService
+    private readonly tokenService: TokenService,
+    @Inject(NEST_AUTH_API) private readonly api: INestAuthModuleOptionsApi
   ) {}
 
   public pullContextData(context: ExecutionContext): Required<IContextData> {
-    const request = context.switchToHttp().getRequest<IncomingMessage>();
+    const request = this.getRequestFromContext(context);
     const { method = 'GET' } = request;
 
     const handler = context.getHandler();
@@ -45,7 +53,7 @@ export class ContextService {
   }
 
   public pullUserFromContext(context: ExecutionContext): Observable<IUserEntity | undefined> {
-    const token = this.tokenService.getValidTokenFromRequest(context.switchToHttp().getRequest());
+    const token = this.tokenService.getValidTokenFromRequest(this.getRequestFromContext(context));
 
     const { userId: id } = this.tokenService.verify<ITokenPayload>(token);
 
@@ -54,5 +62,18 @@ export class ContextService {
 
   public pullSessionFromContext(_: ExecutionContext): ISessionEntity {
     throw new Error('Method not implemented');
+  }
+
+  private getRequestFromContext(context: ExecutionContext): IncomingMessage {
+    const match: Record<INestAuthModuleOptionsApi, () => IncomingMessage | undefined> = {
+      graphql: () => GqlExecutionContext.create(context)?.getContext()?.req,
+      rest: () => context.switchToHttp()?.getRequest()
+    };
+
+    const request = match[this.api]();
+
+    if (!request) throw new ContextRequestIsUndefinedError();
+
+    return request;
   }
 }

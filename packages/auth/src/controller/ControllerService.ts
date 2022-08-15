@@ -9,6 +9,21 @@ export class ControllerService {
     return getProtoFunctionNames(Controller);
   }
 
+  static getPath(Controller: Type): string {
+    const { name } = Controller;
+    const nameLength = name.length;
+
+    const path = (
+      name.endsWith('Controller')
+        ? name.slice(0, nameLength - 10)
+        : name.endsWith('Resolver')
+        ? name.slice(0, nameLength - 8)
+        : ''
+    ).toLowerCase();
+
+    return <string>Reflect.getMetadata(PATH_METADATA, Controller) || path;
+  }
+
   static getHandlers(Controller: Type): Fn[] {
     const proto = Controller.prototype;
 
@@ -19,7 +34,7 @@ export class ControllerService {
     return {
       Controller,
       Policy,
-      path: <string>Reflect.getMetadata(PATH_METADATA, Controller),
+      path: this.getPath(Controller),
       handlerActionPairs: this.getHandlers(Controller).map((handler) => [
         handler,
         HandlerService.createAction(handler)
