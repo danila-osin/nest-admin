@@ -8,10 +8,5 @@ export const isPolicy = (Policy: Type): Policy is Type<IPolicy> => {
 };
 
 export const isPromise = <T>(value: any): value is Promise<T> => {
-  return (
-    value !== undefined &&
-    value !== null &&
-    typeof value === 'object' &&
-    typeof value['then'] === 'function'
-  );
+  return value !== null && typeof value === 'object' && typeof value['then'] === 'function';
 };
