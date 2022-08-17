@@ -22,7 +22,11 @@ export class TokenService {
   public verify<T extends JwtPayload>(token: string): T {
     const { secret } = this.tokenOptions;
 
-    return this.serializer.verify(token, secret);
+    try {
+      return this.serializer.verify(token, secret);
+    } catch (e) {
+      throw new UnauthorizedError();
+    }
   }
 
   public getTokenFromRequest(request: IncomingMessage): string | undefined {

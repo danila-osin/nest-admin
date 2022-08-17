@@ -1,10 +1,16 @@
 import { BooleanLike, IPolicy } from '@nest-admin/auth';
-import { ProjectsResolver } from 'projects';
+import { Injectable } from '@nestjs/common';
+import { ProjectsResolver } from './ProjectsResolver';
+import { ProjectsService } from './ProjectsService';
 import { UserEntity } from 'users';
 
+@Injectable()
 export class ProjectsPolicy implements IPolicy<ProjectsResolver, UserEntity> {
+  constructor(private readonly projectsService: ProjectsService) {}
+
   public authorized(action: keyof ProjectsResolver, user?: UserEntity): BooleanLike {
     console.log(`ProjectPolicyAction called: ${action}`);
+    console.log('>> Projects list', this.projectsService.get());
 
     return this[action] ? this[action](user) : this.show();
   }

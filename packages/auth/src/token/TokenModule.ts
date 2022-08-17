@@ -4,7 +4,7 @@ import { TokenService } from './TokenService';
 
 @Module({
   imports: [SerializerModule],
-  providers: [Serializer, TokenService],
+  providers: [TokenService, Serializer],
   exports: [TokenService, Serializer]
 })
 export class TokenModule {}

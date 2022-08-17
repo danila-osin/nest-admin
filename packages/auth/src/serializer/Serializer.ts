@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { sign, verify, JwtPayload } from 'jsonwebtoken';
+import { JwtPayload, sign, verify } from 'jsonwebtoken';
+import { SerializerVerifyError } from './errors';
 
 @Injectable()
 export class Serializer {
@@ -8,6 +9,10 @@ export class Serializer {
   }
 
   public verify<T extends JwtPayload>(token: string, secret: string): T {
-    return <T>verify(token, secret);
+    try {
+      return <T>verify(token, secret);
+    } catch (e) {
+      throw new SerializerVerifyError((e as Error).message || '');
+    }
   }
 }

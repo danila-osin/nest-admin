@@ -24,7 +24,7 @@ export const Authorize: IAuthorizeDecorator = (input) => {
   if (!isPolicy(Policy)) throw new SpecifiedClassIsNotPolicyError(Policy.name);
   else
     return (Controller) => {
-      debug('Boot:policy')('Registration: %o -> %o', `${Policy.name}`, `${Controller.name}`);
+      debug('Boot:policy')('Registration: %o -> %o', Policy.name, Controller.name);
       const controllerData = ControllerService.createData(Controller, Policy);
       NestAuthCoreModule.boot.saveControllerData(controllerData);
 

@@ -1,13 +1,15 @@
-import { DynamicModule, Global, Module } from '@nestjs/common';
+import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
 import { AuthModule } from 'auth';
 import { AuthorizerModule } from 'authorizer';
 import { Boot } from 'boot';
-import { NEST_AUTH_ENTITIES, NEST_AUTH_API, NEST_AUTH_TOKEN_OPTIONS } from 'const';
+import { NEST_AUTH_API, NEST_AUTH_ENTITIES, NEST_AUTH_TOKEN_OPTIONS } from 'const';
+import { debug } from 'debug';
 import { INestAuthModuleUserOptions } from 'interfaces';
 import { ModuleOptions } from 'ModuleOptions';
+import { SerializerModule } from 'serializer';
+import { TokenModule } from 'token';
 import { UserModule } from 'user';
 import { LogBoot } from 'utils';
-import { debug } from 'debug';
 
 @Global()
 @Module({})
@@ -18,7 +20,7 @@ export class NestAuthCoreModule {
   static forRoot(userOptions: INestAuthModuleUserOptions): DynamicModule {
     const options = ModuleOptions.applyModuleOptions(userOptions);
 
-    const providers = [
+    const providers: Provider[] = [
       {
         provide: NEST_AUTH_ENTITIES,
         useValue: options.database.entities
@@ -35,7 +37,13 @@ export class NestAuthCoreModule {
 
     return {
       module: NestAuthCoreModule,
-      imports: [UserModule, AuthModule.forRoot(options.api), AuthorizerModule],
+      imports: [
+        AuthorizerModule,
+        AuthModule.forRoot(options.api),
+        UserModule,
+        TokenModule,
+        SerializerModule
+      ],
       providers,
       exports: [AuthorizerModule, ...providers]
     };

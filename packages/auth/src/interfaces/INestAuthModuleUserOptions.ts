@@ -1,6 +1,6 @@
 import {
-  INestAuthModuleOptionsDatabaseType,
   INestAuthModuleOptionsApi,
+  INestAuthModuleOptionsDatabaseType,
   INestModuleEntities
 } from './INestAuthModuleOptions';
 
